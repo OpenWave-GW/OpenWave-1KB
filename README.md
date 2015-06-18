@@ -51,12 +51,14 @@ Development Tools
 
  *OpenWave-1KB is developed under Windows 32 bits environment, and all the packages are Windows 32bits version.*
  
- *OpenWave-1KB is also tested under Ubuntu 10.04 (32 bits) with the same version of the packages listed above.  And the following package and libraries are required:*
+- **Ubuntu Linux:**
+   OpenWave-1KB is also tested under Ubuntu 10.04 (32 bits) with the same version of the packages listed above.  And the following package and libraries are required:*
    * nose-1.3.4
    * qt4-qmake
    * libqt4-dev
 
- *OpenWave-1KB is also tested on Raspberry Pi 2 with following package and libraries:*
+- **Raspbian Linux:**
+   OpenWave-1KB is also tested on Raspberry Pi 2 with following package and libraries:
    * python-matplotlib
    * python-numpy
    * python-scipy
