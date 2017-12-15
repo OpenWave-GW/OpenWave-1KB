@@ -45,7 +45,7 @@ import matplotlib as mpl
 mpl.rcParams['backend.qt4'] = 'PySide'  #Used for PySide.
 mpl.rcParams['agg.path.chunksize'] = 100000 #For big data.
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 from mpl_toolkits.axes_grid1 import host_subplot
 import mpl_toolkits.axisartist as AA
 from PySide import QtCore, QtGui
