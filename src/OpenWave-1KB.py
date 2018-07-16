@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Program name: OpenWave-1KB
 
@@ -25,18 +26,20 @@ OpenWave-1KB use Qt version 4.8 library under the terms of the LGPL version 2.1.
 Description:
 OpenWave-1KB is a python example program used to get waveform and image from DSO.
 
-Module imported:
-  1. Python 2.7.6
-  2. dso1kb 1.00
-  3. PySerial 2.7
-  4. Matplotlib 1.3.1
-  5. Numpy 1.8.0
-  6. PySide 1.2.1
-  7. PIL 1.1.7
+Environment:
+  1. Python 2.7.9
+  2. dso1kb 1.01
+  3. gw_com_1kb 1.00
+  4. gw_lan 1.00
+  5. PySerial 2.7
+  6. Matplotlib 1.3.1
+  7. Numpy 1.8.0
+  8. PySide 1.2.1
+  9. PIL 1.1.7
 
-Version: 1.00
+Version: 1.01
 
-Created on MAY 25 2015
+Created on JUL 12 2018
 
 Author: Kevin Meng
 """
@@ -45,22 +48,62 @@ import matplotlib as mpl
 mpl.rcParams['backend.qt4'] = 'PySide'  #Used for PySide.
 mpl.rcParams['agg.path.chunksize'] = 100000 #For big data.
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 from mpl_toolkits.axes_grid1 import host_subplot
 import mpl_toolkits.axisartist as AA
 from PySide import QtCore, QtGui
 import numpy as np
 from PIL import Image
 import os, sys, time
+from gw_com_1kb import com
+from gw_lan import lan
 import dso1kb
 
-__version__ = "1.00" #OpenWave-1KB software version.
+__version__ = "1.01" #OpenWave-1KB software version.
+
+def checkInterface(str):
+    if str!= '':
+        print str
+    #Load config file if it exists
+    elif os.path.exists('port.config'):
+        f = open('port.config', 'r')
+        while(1):
+            str = f.readline()
+            if(str == ''):
+                f.close()
+                return ''
+            if(str[0] != '#'):
+                break
+        f.close()
+       
+    #Check ethernet connection(model name not checked)
+    sInterface=str.split('\n')[0]
+    #print 'sInterface=',sInterface
+    if(sInterface.count('.') == 3 and sInterface.count(':') == 1): #Got ip address.
+        ip_str=sInterface.split(':')
+        ip=ip_str[0].split('.')
+        if(ip_str[1].isdigit() and ip[0].isdigit() and ip[1].isdigit() and ip[2].isdigit() and ip[3].isdigit()):
+            #print('ip addr=%s.%s.%s.%s:%s'%(ip[0],ip[1],ip[2],ip[3],ip_str[1]))
+            str=lan.connection_test(sInterface)
+            if(str != ''):
+                return str
+    #Check COM port connection(model name not checked)
+    elif('COM' in sInterface):
+        if(com.connection_test(sInterface) != ''):
+            return sInterface
+    elif('ttyACM' in sInterface):
+        if 'ttyACM' == sInterface[0:6]:
+            sInterface='/dev/'+sInterface
+        if(com.connection_test(sInterface) != ''):
+            return sInterface
+    
+    return com.scanComPort()  #Scan all the USB port.
 
 class Window(QtGui.QWidget):
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
 
-        self.setWindowTitle('OpenWave-1KB')
+        self.setWindowTitle('OpenWave-1KB V%s'%__version__)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("openwave.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)
@@ -91,7 +134,7 @@ class Window(QtGui.QWidget):
         self.captureBtn = QtGui.QPushButton('Capture')
         self.captureBtn.setFixedSize(100, 50)
         self.captureBtn.clicked.connect(self.captureAction)
-        if(portNum==-1):
+        if(dso.connection_status==0):
             self.captureBtn.setEnabled(False)
 
         #Type: Raw Data/Image
@@ -195,7 +238,7 @@ class Window(QtGui.QWidget):
 
     def saveCsvAction(self):
         if(self.typeFlag==True): #Save raw data to csv file.
-            file_name=QtGui.QFileDialog.getSaveFileName(self, "Save as", '', "Fast CSV File(*.csv)")[0]
+            file_name=QtGui.QFileDialog.getSaveFileName(self, "Save as", '', "Fast CSV File(*.CSV)")[0]
             num=len(dso.ch_list)
             #print num
             for ch in xrange(num):
@@ -205,29 +248,28 @@ class Window(QtGui.QWidget):
             f = open(file_name, 'wb')
             item=len(dso.info[0])
             #Write file header.
-            f.write('%s, \n' % dso.info[0][0])
+            f.write('%s,\r\n' % dso.info[0][0])
             for x in xrange(1,  23):
                 str=''
                 for ch in xrange(num):
                     str+=('%s,' % dso.info[ch][x])
-                str+='\n'
+                str+='\r\n'
                 f.write(str)
+            #Write Fast CSV mode only.
+            str=''
+            for ch in xrange(num):
+                str+='Mode,Fast,'
+            str+='\r\n'
+            f.write(str)
+
+            str=''
             if(num==1):
-                str='Mode,Fast,\n'
-                f.write(str)
-                str='Waveform Data,\n'
-                f.write(str)
+                str+=('%s,' % dso.info[0][24])
             else:
-                str=''
                 for ch in xrange(num):
-                    str+=('Mode,Fast,')
-                str+='\n'
-                f.write(str)
-                str=''
-                for ch in xrange(num):
-                    str+=('Waveform Data,,')
-                str+='\n'
-                f.write(str)
+                    str+=('%s,,' % dso.info[ch][24])
+            str+='\r\n'
+            f.write(str)
             #Write raw data.
             item=len(dso.iWave[0])
             #print item
@@ -241,7 +283,7 @@ class Window(QtGui.QWidget):
                 else:
                     for ch in xrange(num):
                         str+=('%s, ,' % dso.iWave[ch][x])
-                str+='\n'
+                str+='\r\n'
                 f.write(str)
                 if(x==n_tenth):
                     n_tenth+=tenth
@@ -256,14 +298,13 @@ class Window(QtGui.QWidget):
             return
         if(self.typeFlag==True): #Save raw data waveform as png file.
             main.figure.savefig(file_name)
-            print('Saved image to %s.'%file_name)
         else:  #Save figure to png file.
-            if(dso.nodename=='pi'): #For raspberry pi only.
+            if(dso.osname=='pi'): #For raspberry pi only.
                 img=dso.im.transpose(Image.FLIP_TOP_BOTTOM)
                 img.save(file_name)
             else:
                 dso.im.save(file_name)
-            print('Saved image to %s.'%file_name)
+        print('Saved image to %s.'%file_name)
 
     def loadAction(self):
         dso.ch_list=[]
@@ -280,16 +321,13 @@ class Window(QtGui.QWidget):
                 total_chnum=len(dso.ch_list)
                 if(total_chnum==0):
                     return
-                if(dso.dataMode=='Fast'):
-                    self.drawWaveform(0)
-                else:
-                    self.drawWaveform(0)
+                self.drawWaveform(0)
         else:
             print('File not found!')
 
     def quitAction(self):
-        if(portNum!=-1):
-            dso.IO.close()
+        if(dso.connection_status==1):
+            dso.closeIO()
         self.close()
     
     def captureAction(self):
@@ -325,9 +363,13 @@ class Window(QtGui.QWidget):
                 time.sleep(5)
                 self.drawWaveform(0)
         else: #Get image.
-            dso.write(':DISP:OUTP?\n')                 #Send command to get image from DSO.
+            img_type=1   #1 for RLE format, 0 for PNG format.
+            if(img_type):
+                dso.write(':DISP:OUTP?\n')                 #Send command to get image from DSO.
+            else:
+                dso.write(':DISP:PNGOutput?\n')            #Send command to get image from DSO.
             dso.getBlockData()
-            dso.RleDecode()
+            dso.ImageDecode(img_type)
             self.showImage()
             plt.tight_layout(True)
             self.canvas.draw()
@@ -412,7 +454,6 @@ class Window(QtGui.QWidget):
         return 0
 
 if __name__ == '__main__':
-    global portNum
 
     f = open('license.txt', 'r')
     print('-----------------------------------------------------------------------------');
@@ -420,10 +461,18 @@ if __name__ == '__main__':
     f.close()
     print('-----------------------------------------------------------------------------');
     print('OpenWave-1KB V%s\n'% __version__)
-    dso=dso1kb.Dso1kb()
 
-    #Search and make a connection with COM port.
-    portNum=dso.ScanComPort() #Scan COM port.
+    #Get command line arguments.
+    cmd=sys.argv[-1]
+    if('OpenWave' in cmd):
+        cmd=''
+    
+    #Check interface according to config file or command line argument.
+    port=checkInterface(cmd)
+    
+    #Connecting to a DSO.
+    dso=dso1kb.Dso(port)
+
     app = QtGui.QApplication(sys.argv)
     main = Window()
     main.show()
