@@ -29,9 +29,9 @@ Module imported:
   1. PIL 1.1.7
   2. Numpy 1.8.0
 
-Version: 1.01
+Version: 1.02
 
-Created on JUL 12 2018
+Modified on NOV 04 2019
 
 Author: Kevin Meng
 """
@@ -43,13 +43,13 @@ import struct
 import numpy as np
 import io, os, sys, time, platform
 
-__version__ = "1.01" #dso1kb module's version.
+__version__ = "1.02" #dso1kb module's version.
 
-sModelList=[['GDS-1072B','DCS-1072B','IDS-1072B','GDS-71072B','GDS-1072R','DSO-1072D',
-             'GDS-1102B','DCS-1102B','IDS-1102B','GDS-71102B','GDS-1102R','DSO-1102D'],
-            ['GDS-1054B','DCS-1054B','IDS-1054B','GDS-71054B','GDS-1054R',
-             'GDS-1074B','DCS-1074B','IDS-1074B','GDS-71074B','GDS-1074R','DSO-1072D',
-             'GDS-1104B','DCS-1104B','IDS-1104B','GDS-71104B','GDS-1104R','DSO-1102D']]
+sModelList=[['GDS-1072B','DCS-1072B','IDS-1072B','GDS-71072B','GDS-1072R','GDS-1072E','DSO-1072D',
+             'GDS-1102B','DCS-1102B','IDS-1102B','GDS-71102B','GDS-1102R','GDS-1102E','DSO-1102D'],
+            ['GDS-1054B','DCS-1054B','IDS-1054B','GDS-71054B','GDS-1054R','GDS-1054E',
+             'GDS-1074B','DCS-1074B','IDS-1074B','GDS-71074B','GDS-1074R','GDS-1074E','DSO-1072D',
+             'GDS-1104B','DCS-1104B','IDS-1104B','GDS-71104B','GDS-1104R','GDS-1104E','DSO-1102D']]
 
 def generate_lut():
     global lu_table
@@ -76,7 +76,7 @@ class Dso:
                 os_ver=int(platform.uname()[2])
                 #print 'os_ver=', os_ver
                 #if(os_ver >= 10): 
-                if(os_ver >= 8):  #You might get wrong OS version here(when OpenWave-2KE.exe is running), especially for Win 10.
+                if(os_ver >= 8):  #You might get wrong OS version here(when OpenWave-1KB.exe is running), especially for Win 10.
                     self.osname='win10'
                 else:
                     self.osname='win'

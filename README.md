@@ -14,14 +14,14 @@ This icon is copyright by Good Will Instrument Co., Ltd all rights reserved.
 
 
 
-OpenWave-1KB is an open-source project. It's a simple python program that can get image or raw data from digital storage oscilloscope(GDS-1000B/DCS-1000B/IDS-1000B/DSO-1000D series) via USB port or Ethernet.  
+OpenWave-1KB is an open-source project. It's a simple python program that can get image or raw data from digital storage oscilloscope(GDS-1000B/DCS-1000B/IDS-1000B/DSO-1000D/GDS-1000E series) via USB port or Ethernet.  
 
 Users can execute the same source code on Windows, Linux(Ubuntu) and Raspbian(on Raspberry Pi 2) operating system without changing a word. By using this version, users can also create multiple DSO connections at the same time.
 
 
 Equipment
 ------------
-You have to get a new digital storage oscilloscope - GDS-1000B, GDS-1000R(GOOD WILL INSTRUMENT)/DCS-1000B(TEXIO)/IDS-1000B(RS PRO)/DSO-1000D(CONRAD) and a PC or NB with MS Windows OS.
+You have to get a new digital storage oscilloscope - GDS-1000B, GDS-1000R, GDS-1000E(GOOD WILL INSTRUMENT)/DCS-1000B(TEXIO)/IDS-1000B(RS PRO)/DSO-1000D(CONRAD) and a PC or NB with MS Windows OS.
 
 
 
@@ -30,7 +30,7 @@ Environment
 ------------
 Currently OpenWave-1KB may be executed on Windows XP/7/8 32 or 64 bits OS. We also tested the program on Win 10, the connection is good but can't guarantee to be 100% no problem on different platforms. You have to download and install the USB driver(dso_vpo V1.08) from [www.gwinstek.com](http://www.gwinstek.com) or [here](/dso_vpo_v108.zip) when the first connection with GDS-1000B. 
 
-Please unzip the [OpenWave-1KB V1.01.zip](/OpenWave-1KB_V1.01.zip) and find the OpenWave-1KB.exe in the folder. OpenWave-1KB.exe can be executed directly without installation. Please be noticed that the path name and folder name can't be double-byte characters.
+Please unzip the [OpenWave-1KB V1.02.zip](/OpenWave-1KB_V1.02.zip) and find the OpenWave-1KB.exe in the folder. OpenWave-1KB.exe can be executed directly without installation. Please be noticed that the path name and folder name can't be double-byte characters.
 
 The OpenWave-1KB source code can also be executed on Ubuntu 32 bits Linux OS or Raspbian OS(on Raspberry Pi 2). The USB driver is not required in this environment.
 
@@ -42,17 +42,17 @@ Command Line Execution
 
 1.  Connected via USB(please find the port number in the Device Manager)
     ```
-    D:\OpenWave-1KB V1.01>OpenWave-1KB COM5
+    D:\OpenWave-1KB V1.02>OpenWave-1KB COM5
     ```
 
 2.  Connected via USB(automatically reading config file or scanning port)
     ```
-    D:\OpenWave-1KB V1.01>OpenWave-1KB
+    D:\OpenWave-1KB V1.02>OpenWave-1KB
     ```
 
 3.  Connected via Ethernet:
     ```
-    D:\OpenWave-1KB V1.01>OpenWave-1KB 172.16.5.12:3000
+    D:\OpenWave-1KB V1.02>OpenWave-1KB 172.16.5.12:3000
     ```
 
 
@@ -60,17 +60,17 @@ Command Line Execution
 
 1.  Connected via USB(please find the device under /dev)
     ```
-    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.01$ sudo python OpenWave-1KB.py ttyACM1
+    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.02$ sudo python OpenWave-1KB.py ttyACM1
     ```
     
 2.  Connected via USB(automatically reading config file or scanning port)
     ```
-    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.01$ sudo python OpenWave-1KB.py
+    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.02$ sudo python OpenWave-1KB.py
     ```
     
 3.  Connected via Ethernet:
     ```
-    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.01$ sudo python OpenWave-1KB.py 172.16.5.12:3000
+    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.02$ sudo python OpenWave-1KB.py 172.16.5.12:3000
     ```
 
 ***Tips:***
@@ -79,7 +79,7 @@ Command Line Execution
 
 2.  *If you are using Linux, please add your username to group ```dialout``` to get proper privilege level for device accessing.*
     ```
-    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.01$ $ sudo adduser xxxx dialout     #xxxx is your username
+    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.02$ $ sudo adduser xxxx dialout     #xxxx is your username
     ```
 
 3.  *You can also create a `port.config` file containing `COM5` or `ttyACM1` or `172.16.5.11:3000`(as an example) in the folder for next time quick connection.*
