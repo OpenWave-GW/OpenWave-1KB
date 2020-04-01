@@ -30,7 +30,7 @@ Environment
 ------------
 Currently OpenWave-1KB may be executed on Windows XP/7/8 32 or 64 bits OS. We also tested the program on Win 10, the connection is good but can't guarantee to be 100% no problem on different platforms. You have to download and install the USB driver(dso_vpo V1.08) from [www.gwinstek.com](http://www.gwinstek.com) or [here](/dso_vpo_v108.zip) when the first connection with GDS-1000B. 
 
-Please unzip the [OpenWave-1KB V1.02.zip](/OpenWave-1KB_V1.02.zip) and find the OpenWave-1KB.exe in the folder. OpenWave-1KB.exe can be executed directly without installation. Please be noticed that the path name and folder name can't be double-byte characters.
+Please unzip the [OpenWave-1KB V1.03.zip](/OpenWave-1KB_V1.03.zip) and find the OpenWave-1KB.exe in the folder. OpenWave-1KB.exe can be executed directly without installation. Please be noticed that the path name and folder name can't be double-byte characters.
 
 The OpenWave-1KB source code can also be executed on Ubuntu 32 bits Linux OS or Raspbian OS(on Raspberry Pi 2). The USB driver is not required in this environment.
 
@@ -42,17 +42,17 @@ Command Line Execution
 
 1.  Connected via USB(please find the port number in the Device Manager)
     ```
-    D:\OpenWave-1KB V1.02>OpenWave-1KB COM5
+    D:\OpenWave-1KB V1.03>OpenWave-1KB COM5
     ```
 
 2.  Connected via USB(automatically reading config file or scanning port)
     ```
-    D:\OpenWave-1KB V1.02>OpenWave-1KB
+    D:\OpenWave-1KB V1.03>OpenWave-1KB
     ```
 
 3.  Connected via Ethernet:
     ```
-    D:\OpenWave-1KB V1.02>OpenWave-1KB 172.16.5.12:3000
+    D:\OpenWave-1KB V1.03>OpenWave-1KB 172.16.5.12:3000
     ```
 
 
@@ -60,17 +60,17 @@ Command Line Execution
 
 1.  Connected via USB(please find the device under /dev)
     ```
-    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.02$ sudo python OpenWave-1KB.py ttyACM1
+    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.03$ sudo python OpenWave-1KB.py ttyACM1
     ```
     
 2.  Connected via USB(automatically reading config file or scanning port)
     ```
-    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.02$ sudo python OpenWave-1KB.py
+    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.03$ sudo python OpenWave-1KB.py
     ```
     
 3.  Connected via Ethernet:
     ```
-    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.02$ sudo python OpenWave-1KB.py 172.16.5.12:3000
+    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.03$ sudo python OpenWave-1KB.py 172.16.5.12:3000
     ```
 
 ***Tips:***
@@ -79,7 +79,7 @@ Command Line Execution
 
 2.  *If you are using Linux, please add your username to group ```dialout``` to get proper privilege level for device accessing.*
     ```
-    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.02$ $ sudo adduser xxxx dialout     #xxxx is your username
+    user@Ubuntu:~/workspace_python/OpenWave-1KB V1.03$ $ sudo adduser xxxx dialout     #xxxx is your username
     ```
 
 3.  *You can also create a `port.config` file containing `COM5` or `ttyACM1` or `172.16.5.11:3000`(as an example) in the folder for next time quick connection.*

@@ -37,9 +37,9 @@ Environment:
   8. PySide 1.2.1
   9. PIL 1.1.7
 
-Version: 1.02
+Version: 1.03
 
-Created on JUL 12 2018
+Modified on APR 01 2020
 
 Author: Kevin Meng
 """
@@ -59,7 +59,7 @@ from gw_com_1kb import com
 from gw_lan import lan
 import dso1kb
 
-__version__ = "1.02" #OpenWave-1KB software version.
+__version__ = "1.03" #OpenWave-1KB software version.
 
 def checkInterface(str):
     if str!= '':
@@ -133,9 +133,18 @@ class Window(QtGui.QWidget):
 
         self.captureBtn = QtGui.QPushButton('Capture')
         self.captureBtn.setFixedSize(100, 50)
-        self.captureBtn.clicked.connect(self.captureAction)
+        self.captureBtn.clicked.connect(self.manualCapture)
         if(dso.connection_status==0):
             self.captureBtn.setEnabled(False)
+            
+        self.continuousBtn = QtGui.QRadioButton('Continuous')
+        self.continuousBtn.setEnabled(True)
+        self.continuousBtn.clicked.connect(self.setContinuous)
+
+        #Continuous capture selection
+        self.captureLayout = QtGui.QHBoxLayout()
+        self.captureLayout.addWidget(self.captureBtn)
+        self.captureLayout.addWidget(self.continuousBtn)
 
         #Type: Raw Data/Image
         self.typeBtn = QtGui.QPushButton('Raw Data')
@@ -149,6 +158,7 @@ class Window(QtGui.QWidget):
         #Channel Selection.
         self.ch1checkBox = QtGui.QCheckBox('CH1')
         self.ch1checkBox.setFixedSize(60, 30)
+        self.ch1checkBox.setChecked(True)
         self.ch2checkBox = QtGui.QCheckBox('CH2')
         self.ch2checkBox.setFixedSize(60, 30)
         if(dso.chnum==4):
@@ -171,6 +181,11 @@ class Window(QtGui.QWidget):
         self.typeLayout.addLayout(self.selectLayout)
         if(dso.chnum==4):
             self.typeLayout.addLayout(self.selectLayout2)
+
+        self.zoominoutLayout = QtGui.QHBoxLayout()
+        self.zoominoutLayout.addWidget(self.zoomBtn)
+        self.zoominoutLayout.addWidget(self.panBtn)
+        self.zoominoutLayout.addWidget(self.homeBtn)
 
         #Save/Load/Quit button
         self.saveBtn = QtGui.QPushButton('Save')
@@ -200,10 +215,11 @@ class Window(QtGui.QWidget):
         self.wave_box.addLayout(self.waveLayout)
         
         self.wavectrlLayout = QtGui.QHBoxLayout()
-        self.wavectrlLayout.addWidget(self.zoomBtn)
-        self.wavectrlLayout.addWidget(self.panBtn)
-        self.wavectrlLayout.addWidget(self.homeBtn)
-        self.wavectrlLayout.addWidget(self.captureBtn)
+        self.wavectrlLayout.addStretch(1)
+        self.wavectrlLayout.addLayout(self.zoominoutLayout)
+        self.wavectrlLayout.addStretch(1)
+        self.wavectrlLayout.addLayout(self.captureLayout)
+        self.wavectrlLayout.addStretch(1)
         
         self.saveloadLayout = QtGui.QHBoxLayout()
         self.saveloadLayout.addWidget(self.saveBtn)
@@ -220,6 +236,10 @@ class Window(QtGui.QWidget):
         main_box.addLayout(self.ctrl_box)         #Save/Load/Quit
         self.setLayout(main_box)
         
+        self.captured_flag=0
+        self.timer=QtCore.QTimer()
+        self.timer.timeout.connect(self.timerCapture)
+
     def typeAction(self):
         if(self.typeFlag==True):
             self.typeFlag=False
@@ -238,7 +258,7 @@ class Window(QtGui.QWidget):
 
     def saveCsvAction(self):
         if(self.typeFlag==True): #Save raw data to csv file.
-            file_name=QtGui.QFileDialog.getSaveFileName(self, "Save as", '', "Fast CSV File(*.CSV)")[0]
+            file_name=QtGui.QFileDialog.getSaveFileName(self, "Save as", 'DS0001', "Fast CSV File(*.csv)")[0]
             num=len(dso.ch_list)
             #print num
             for ch in xrange(num):
@@ -293,7 +313,7 @@ class Window(QtGui.QWidget):
 
     def savePngAction(self):
         #Save figure to png file.
-        file_name=QtGui.QFileDialog.getSaveFileName(self, "Save as", '', "PNG File(*.png)")[0]
+        file_name=QtGui.QFileDialog.getSaveFileName(self, "Save as", 'DS0001', "PNG File(*.png)")[0]
         if(file_name==''):
             return
         if(self.typeFlag==True): #Save raw data waveform as png file.
@@ -329,6 +349,25 @@ class Window(QtGui.QWidget):
         if(dso.connection_status==1):
             dso.closeIO()
         self.close()
+    
+    def timerCapture(self):
+        self.captureAction()
+        if(self.continuousBtn.isChecked()==True):
+            self.timer.start(10)  #Automatic capturing. 
+        
+    def manualCapture(self):
+        if(self.continuousBtn.isChecked()==True):
+            if(self.captured_flag ==0):
+                self.captured_flag = 1   #Continuous capture started.
+                self.captureBtn.setText("Click to Stop")
+                self.loadBtn.setEnabled(False)
+                self.timer.start()
+            else:
+                self.captured_flag = 0   #Continuous capture stopped.
+                self.captureBtn.setText("Capture")
+                self.loadBtn.setEnabled(True)
+                self.timer.stop()
+        self.captureAction()
     
     def captureAction(self):
         dso.iWave=[[], [], [], []]
@@ -374,6 +413,13 @@ class Window(QtGui.QWidget):
             plt.tight_layout(True)
             self.canvas.draw()
             print('Image is ready!')
+
+    def setContinuous(self):
+        if(self.continuousBtn.isChecked()==False):
+            self.captured_flag = 0   #Continuous capture stopped.
+            self.timer.stop()
+            self.loadBtn.setEnabled(True)
+            self.captureBtn.setText("Capture")
 
     def showImage(self):
         #Turn the ticks off and show image.
