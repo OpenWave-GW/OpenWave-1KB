@@ -37,9 +37,9 @@ Environment:
   8. PySide 1.2.1
   9. PIL 1.1.7
 
-Version: 1.03
+Version: 1.04
 
-Modified on APR 01 2020
+Modified on JUN 07 2021
 
 Author: Kevin Meng
 """
@@ -59,7 +59,7 @@ from gw_com_1kb import com
 from gw_lan import lan
 import dso1kb
 
-__version__ = "1.03" #OpenWave-1KB software version.
+__version__ = "1.04" #OpenWave-1KB software version.
 
 def checkInterface(str):
     if str!= '':

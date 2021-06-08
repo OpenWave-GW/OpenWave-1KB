@@ -29,9 +29,9 @@ Module imported:
   1. PIL 1.1.7
   2. Numpy 1.8.0
 
-Version: 1.03
+Version: 1.04
 
-Modified on APR 01 2020
+Modified on JUN 07 2021
 
 Author: Kevin Meng
 """
@@ -43,14 +43,15 @@ import struct
 import numpy as np
 import io, os, sys, time, platform
 
-__version__ = "1.03" #dso1kb module's version.
+__version__ = "1.04" #dso1kb module's version.
 
-sModelList=[['GDS-1072B','DCS-1072B','IDS-1072B','GDS-71072B','GDS-1072R','GDS-1072E','DSO-1072D',
-             'GDS-1102B','DCS-1102B','IDS-1102B','GDS-71102B','GDS-1102R','GDS-1102E','DSO-1102D',
-             'GDS-1152E','GDS-1202B','GDS-71202B','GDS-1102B-LAN'],
+sModelList=[['DCS-1052B',
+             'GDS-1072B','DCS-1072B','IDS-1072B','GDS-71072B','GDS-1072R','GDS-1072E','DSO-1072D',
+             'GDS-1102B','DCS-1102B','IDS-1102B','GDS-71102B','GDS-1102R','GDS-1102E','DSO-1102D','GDS-1102DC','GDS-1102EC','GDS-1102EY','GDS-1102B-LAN',
+             'GDS-1152E','GDS-1202B','GDS-71202B'],
             ['GDS-1054B','DCS-1054B','IDS-1054B','GDS-71054B','GDS-1054R','GDS-1054E',
              'GDS-1074B','DCS-1074B','IDS-1074B','GDS-71074B','GDS-1074R','GDS-1074E','DSO-1074D',
-             'GDS-1104B','DCS-1104B','IDS-1104B','GDS-71104B','GDS-1104R','GDS-1104E','DSO-1104D']]
+             'GDS-1104B','DCS-1104B','IDS-1104B','GDS-71104B','GDS-1104R','GDS-1104E','DSO-1104D','GDS-1104EP']]
 
 def generate_lut():
     global lu_table
