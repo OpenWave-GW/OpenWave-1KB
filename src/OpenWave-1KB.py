@@ -28,7 +28,7 @@ OpenWave-1KB is a python example program used to get waveform and image from DSO
 
 Environment:
   1. Python 2.7.9
-  2. dso1kb 1.01
+  2. dso1kb 1.05
   3. gw_com_1kb 1.00
   4. gw_lan 1.00
   5. PySerial 2.7
@@ -37,7 +37,7 @@ Environment:
   8. PySide 1.2.1
   9. PIL 1.1.7
 
-Version: 1.04
+Version: 1.05
 
 Modified on JUN 07 2021
 
@@ -59,7 +59,7 @@ from gw_com_1kb import com
 from gw_lan import lan
 import dso1kb
 
-__version__ = "1.04" #OpenWave-1KB software version.
+__version__ = "1.05" #OpenWave-1KB software version.
 
 def checkInterface(str):
     if str!= '':

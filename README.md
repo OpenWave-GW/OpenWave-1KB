@@ -1,7 +1,4 @@
-![Python logo](/image/python-logo.png)
-
 This is a Python program.
-
 
 
 
@@ -14,14 +11,14 @@ This icon is copyright by Good Will Instrument Co., Ltd all rights reserved.
 
 
 
-OpenWave-1KB is an open-source project. It's a simple python program that can get image or raw data from digital storage oscilloscope(GDS-1000B/DCS-1000B/IDS-1000B/DSO-1000D/GDS-1000E series) via USB port or Ethernet.  
+OpenWave-1KB is an open-source project. It's a simple python program that can get image or raw data from digital storage oscilloscope(GDS-1000B/DCS-1000B/IDS-1000B/RSDS-1000B/DSO-1000D/GDS-1000E series) via USB port or Ethernet.  
 
 Users can execute the same source code on Windows, Linux(Ubuntu) and Raspbian(on Raspberry Pi 2) operating system without changing a word. By using this version, users can also create multiple DSO connections at the same time.
 
 
 Equipment
 ------------
-You have to get a new digital storage oscilloscope - GDS-1000B, GDS-1000R, GDS-1000E(GOOD WILL INSTRUMENT)/DCS-1000B(TEXIO)/IDS-1000B(RS PRO)/DSO-1000D(CONRAD) and a PC or NB with MS Windows OS.
+You have to get a new digital storage oscilloscope - GDS-1000B, GDS-1000R, GDS-1000E(GOOD WILL INSTRUMENT)/DCS-1000B(TEXIO)/IDS-1000B/RSDS-1000B(RS PRO)/DSO-1000D(CONRAD) and a PC or NB with MS Windows OS.
 
 
 
@@ -30,7 +27,7 @@ Environment
 ------------
 Currently OpenWave-1KB may be executed on Windows XP/7/8 32 or 64 bits OS. We also tested the program on Win 10, the connection is good but can't guarantee to be 100% no problem on different platforms. You have to download and install the USB driver(dso_vpo V1.08) from [www.gwinstek.com](http://www.gwinstek.com) or [here](/dso_vpo_v108.zip) when the first connection with GDS-1000B. 
 
-Please unzip the [OpenWave-1KB V1.03.zip](/OpenWave-1KB_V1.03.zip) and find the OpenWave-1KB.exe in the folder. OpenWave-1KB.exe can be executed directly without installation. Please be noticed that the path name and folder name can't be double-byte characters.
+Please unzip the [OpenWave-1KB V1.05.zip](/OpenWave-1KB_V1.05.zip) and find the OpenWave-1KB.exe in the folder. OpenWave-1KB.exe can be executed directly without installation. Please be noticed that the path name and folder name can't be double-byte characters.
 
 The OpenWave-1KB source code can also be executed on Ubuntu 32 bits Linux OS or Raspbian OS(on Raspberry Pi 2). The USB driver is not required in this environment.
 
@@ -86,6 +83,7 @@ Command Line Execution
 
 4.  *If you are using Raspbian on a Raspberry Pi2. Please use root account, that will help you to avoid privilege issues.  You might get trouble if you find your DSO is connected as ttyACM0. Your will have to change some system configuration files manually.*
 
+5.  *Both Windows 10 and Windows 11 come with built-in USB Virtual COM Port (VCP) drivers. Therefore, the USB driver dso_vpo_v108.zip that we provide is not necessary on Windows 10/11.
 
 Development Tools
 ------------
